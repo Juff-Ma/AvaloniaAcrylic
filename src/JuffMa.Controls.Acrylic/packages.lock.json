@@ -19,6 +19,17 @@
           "System.IO.Hashing": "10.0.12"
         }
       },
+      "Microsoft.SourceLink.GitHub": {
+        "type": "Direct",
+        "requested": "[10.0.401, )",
+        "resolved": "10.0.401",
+        "contentHash": "LGmlwgP1Cx37JEWzyjS0o1/+xs/s/e3E2TBSuogI5ePA/9L0pfIfeYX0k5in7Bfcw8Nn2y2sG9jXxydTjiR2Fg==",
+        "dependencies": {
+          "Microsoft.Build.Tasks.Git": "10.0.401",
+          "Microsoft.SourceLink.Common": "10.0.401",
+          "System.IO.Hashing": "10.0.12"
+        }
+      },
       "MinVer": {
         "type": "Direct",
         "requested": "[8.0.0, )",
@@ -56,6 +67,17 @@
         "requested": "[10.0.401, )",
         "resolved": "10.0.401",
         "contentHash": "l4c5K/p3XSYOtFxhK25+LuWrdiRFeBk62I9TY5X7G9/KjWj/Q4bWMWlLQo1BxAvJrLeOcgRXa2a4HuzILJsQBg==",
+        "dependencies": {
+          "Microsoft.Build.Tasks.Git": "10.0.401",
+          "Microsoft.SourceLink.Common": "10.0.401",
+          "System.IO.Hashing": "10.0.12"
+        }
+      },
+      "Microsoft.SourceLink.GitHub": {
+        "type": "Direct",
+        "requested": "[10.0.401, )",
+        "resolved": "10.0.401",
+        "contentHash": "LGmlwgP1Cx37JEWzyjS0o1/+xs/s/e3E2TBSuogI5ePA/9L0pfIfeYX0k5in7Bfcw8Nn2y2sG9jXxydTjiR2Fg==",
         "dependencies": {
           "Microsoft.Build.Tasks.Git": "10.0.401",
           "Microsoft.SourceLink.Common": "10.0.401",

@@ -88,6 +88,11 @@ Licensed under the MIT License. See LICENSE.txt in the project root for details.
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+	  <SourceLinkGiteaHost Include="codeberg.org"/>
+	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
 	  <PackageReference Include="MinVer" Version="8.0.0">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
