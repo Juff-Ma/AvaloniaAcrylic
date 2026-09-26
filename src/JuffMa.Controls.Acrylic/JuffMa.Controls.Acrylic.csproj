@@ -40,6 +40,7 @@ Licensed under the MIT License. See LICENSE.txt in the project root for details.
 	<PropertyGroup>
 		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		<DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+		<RestoreAdditionalProjectFallbackFolders></RestoreAdditionalProjectFallbackFolders>
 		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
 		<RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
 		<Deterministic Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</Deterministic>
@@ -91,6 +92,11 @@ Licensed under the MIT License. See LICENSE.txt in the project root for details.
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+	  <PackageReference
+		Include="Microsoft.NET.ILLink.Tasks"
+		Version="10.0.11"
+		PrivateAssets="all"
+		ExcludeAssets="runtime" />
 	</ItemGroup>
 
 </Project>

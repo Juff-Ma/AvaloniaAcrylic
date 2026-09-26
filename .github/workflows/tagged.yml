@@ -1,0 +1,31 @@
+# push to github registry on tag
+
+name: Push to GH registry on tag
+
+permissions:
+  contents: read
+  actions: read
+  packages: write
+
+on:
+  create:
+  
+jobs:
+  compile:
+    name: Compile package
+    uses: ./.github/workflows/push.yml
+    
+  publish-nuget:
+    name: Publish nuget package to GH registry
+    needs: compile
+    runs-on: ubuntu-26.04
+    if: ${{ ((github.event_name == 'create' && github.event.ref_type == 'tag') || github.event_name == 'push') }}
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: nuget
+      - name: Add nuget source
+        run: dotnet nuget add source --username Juff-Ma --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Juff-Ma/index.json"
+      - name: Publish nuget
+        run: dotnet nuget push *.nupkg --source github --skip-duplicate

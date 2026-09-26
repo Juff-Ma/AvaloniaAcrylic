@@ -1,0 +1,42 @@
+# push to nuget and release artifacts on release
+
+name: Push to nuget and upload release
+
+permissions:
+  contents: write
+  actions: read
+  id-token: write
+
+on:
+  release:
+    types: [created]
+  
+jobs:
+  compile:
+    name: Compile package
+    uses: ./.github/workflows/push.yml
+    with:
+      configuration: "Release"
+    
+  publish-nuget:
+    name: Push to nuget.org
+    needs: compile
+    runs-on: ubuntu-26.04
+    steps:
+      - name: Download nuget artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: nuget
+      - name: Upload to release
+        env:
+          GITHUB_TOKEN: ${{ github.TOKEN }}
+        run: |
+          gh release upload ${{github.event.release.tag_name}} *.nupkg
+          gh release upload ${{github.event.release.tag_name}} *.snupkg
+      - name: NuGet login
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: Juff-Ma
+      - name: Publish nuget
+        run: dotnet nuget push *.nupkg --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json --skip-duplicate
