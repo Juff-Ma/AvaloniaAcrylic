@@ -9,7 +9,10 @@ permissions:
 
 on:
   create:
-  
+  push:
+    tags:
+      - '*'
+
 jobs:
   compile:
     name: Compile package
