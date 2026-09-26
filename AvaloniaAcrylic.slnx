@@ -6,5 +6,6 @@ Licensed under the MIT License. See LICENSE.txt in the project root for details.
 -->
 
 <Solution>
-  <Project Path="src/JuffMa.Controls.Acrylic/JuffMa.Controls.Acrylic.csproj" />
+  <Project Path="src/AvaloniaAcrylicSample/AvaloniaAcrylicSample.csproj" Id="670ac590-cc14-438d-82de-84f52e8476da" />
+  <Project Path="src/JuffMa.Controls.Acrylic/JuffMa.Controls.Acrylic.csproj" Id="317b23e2-73da-4592-a51f-91fc83874a12" />
 </Solution>

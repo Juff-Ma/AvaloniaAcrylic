@@ -1,14 +1,12 @@
 ﻿extensions: designer.cs generated.cs
 extensions: .cs
 // SPDX-License-Identifier: MIT
-
-/*
- %FileName% is part of AvaloniaAcrylic.
- Copyright (C) %CurrentYear% Julian Rossbach
-
- Licensed under the MIT License. See LICENSE.txt in the project root for details.
-*/
-extensions:  .xml .config .xsd .csproj .slnx .xaml .axaml
+//
+// %FileName% is part of AvaloniaAcrylic.
+// Copyright (C) %CurrentYear% Julian Rossbach
+//
+// Licensed under the MIT License. See LICENSE.txt in the project root for details.
+extensions: .xml .config .xsd .csproj .slnx .xaml .axaml
 <!--
 %FileName% is part of AvaloniaAcrylic.
 Copyright (C) %CurrentYear% Julian Rossbach
