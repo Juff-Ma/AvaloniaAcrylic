@@ -1,10 +1,96 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<!--
+JuffMa.Controls.Acrylic.csproj is part of AvaloniaAcrylic.
+Copyright (C) 2026 Julian Rossbach
 
-  <PropertyGroup>
-    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-	<LangVersion>12</LangVersion>
-	<ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+Licensed under the MIT License. See LICENSE.txt in the project root for details.
+-->
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+	    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+		<LangVersion>12</LangVersion>
+		<ImplicitUsings>enable</ImplicitUsings>
+	    <Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<WarningLevel>9999</WarningLevel>
+		<IsAotCompatible>true</IsAotCompatible>
+		<RootNamespace>JuffMa.Controls.Acrylic</RootNamespace>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Title>AvaloniaAcrylic</Title>
+		<Authors>Julian Rossbach</Authors>
+		<Description>Simple and minimal acrylic/frosted glass controls for AvaloniaUI.</Description>
+		<Copyright>Copyright (C) $([System.DateTime]::Now.Year.ToString()) $(Authors)</Copyright>
+		<PackageProjectUrl>https://github.com/Juff-Ma/AvaloniaAcrylic</PackageProjectUrl>
+		<RepositoryUrl>https://codeberg.org/Juff-Ma/AvaloniaAcrylic</RepositoryUrl>
+		<PackageTags>acrylic;frosted;glass;avalonia</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageIcon>AvaloniaAcrylic-Mini.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+		<DisableImplicitNuGetFallbackFolder>true</DisableImplicitNuGetFallbackFolder>
+		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
+		<RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
+		<Deterministic Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</Deterministic>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<MinVerTagPrefix>v</MinVerTagPrefix>
+		<MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
+		<MinVerDefaultPreReleaseIdentifiers>dev.0</MinVerDefaultPreReleaseIdentifiers>
+	</PropertyGroup>
+
+	<!--Customize MinVer behaviour-->
+	<Target Name="CustomVersioning" AfterTargets="MinVer">
+		<PropertyGroup>
+			<AssemblyVersion>$(MinVerMajor).0.0.0</AssemblyVersion>
+
+			<!-- Use the highest possible revision number so debug releases or manual releases are always regarded as higher -->
+			<DefaultRevisionNumber>65535</DefaultRevisionNumber>
+			<FileVersion Condition="'$(Configuration)'=='Debug'">$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).$(DefaultRevisionNumber)</FileVersion>
+
+			<GITHUB_RUN_NUMBER Condition="'$(GITHUB_RUN_NUMBER)' == ''">$(DefaultRevisionNumber)</GITHUB_RUN_NUMBER>
+			<FileVersion Condition="'$(Configuration)'=='Release'">$(MinVerMajor).$(MinVerMinor).$(MinVerPatch).$(GITHUB_RUN_NUMBER)</FileVersion>
+		</PropertyGroup>
+	</Target>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Debug'">
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<DebugType>embedded</DebugType>
+		<IncludeSymbols>false</IncludeSymbols>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<DebugType>portable</DebugType>
+		<IncludeSymbols>true</IncludeSymbols>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="../../assets/AvaloniaAcrylic-Mini.png" Pack="True" PackagePath="/" />
+		<None Include="../../README.md" Pack="True" PackagePath="/" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.SourceLink.Gitea" Version="10.0.401">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="MinVer" Version="8.0.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
 
 </Project>
