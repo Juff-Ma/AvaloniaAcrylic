@@ -38,10 +38,12 @@ jobs:
           10.0.x
           8.0.x
         cache: true
+        cache-dependency-path: |
+          src/JuffMa.Controls.Acrylic/packages.lock.json
     - name: Restore dependencies
       run: dotnet restore src/JuffMa.Controls.Acrylic/JuffMa.Controls.Acrylic.csproj
     - name: Pack nuget
-      run: dotnet pack src/JuffMa.Controls.Acrylic/JuffMa.Controls.Acrylic.csproj -c $env:CONFIGURATION --no-restore -o out
+      run: dotnet pack src/JuffMa.Controls.Acrylic/JuffMa.Controls.Acrylic.csproj -p:GeneratePackageOnBuild=false -c $CONFIGURATION --no-restore -o out
     - name: Upload nuget artifact
       uses: actions/upload-artifact@v7
       with:
