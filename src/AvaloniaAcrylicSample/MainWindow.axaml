@@ -4,36 +4,113 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:acrylic="clr-namespace:JuffMa.Controls.Acrylic;assembly=JuffMa.Controls.Acrylic"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        MinWidth="600" MinHeight="400"
+        Width="750" Height="500"
         x:Class="AvaloniaAcrylicSample.MainWindow"
-        Title="AvaloniaAcrylicSample"
+        Title="AvaloniaAcrylic Sample App"
         Icon="Assets/Icon.png">
     <Panel>
         <Image Source="Assets/Background.jpg" Stretch="UniformToFill"/>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+            <Grid.RowDefinitions>*, *</Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>50, *, *, *, *, 50</Grid.ColumnDefinitions>
             <acrylic:AcrylicBackdropControl 
-                Margin="100 100 100 0" 
-                CornerRadius="8 8 0 0"
-                Grid.Row="0">
+                Margin="25 100 0 0" 
+                CornerRadius="8 0 0 0"
+                Grid.Row="0"
+                Grid.Column="1">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
                         TintColor="White"
-                        TintOpacity="0.001"
-                        MaterialOpacity="0.9"/>
+                        TintOpacity="0.2"
+                        MaterialOpacity="0.1"/>
                 </acrylic:AcrylicBackdropControl.Material>
             </acrylic:AcrylicBackdropControl>
             <acrylic:AcrylicBackdropControl 
-                Margin="100 0 100 100" 
-                CornerRadius="0 0 8 8"
-                Grid.Row="1">
+                Margin="25 0 0 100" 
+                CornerRadius="0 0 0 8"
+                Grid.Row="1"
+                Grid.Column="1">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
                         TintColor="White"
-                        TintOpacity="0.999"
-                        MaterialOpacity="0.9"/>
+                        TintOpacity="0.2"
+                        MaterialOpacity="0.8"/>
+                </acrylic:AcrylicBackdropControl.Material>
+            </acrylic:AcrylicBackdropControl>
+
+            <acrylic:AcrylicBackdropControl 
+                Margin="0 100 25 0" 
+                CornerRadius="0 8 0 0"
+                Grid.Row="0"
+                Grid.Column="2">
+                <acrylic:AcrylicBackdropControl.Material>
+                    <ExperimentalAcrylicMaterial 
+                        TintColor="White"
+                        TintOpacity="0.7"
+                        MaterialOpacity="0.1"/>
+                </acrylic:AcrylicBackdropControl.Material>
+            </acrylic:AcrylicBackdropControl>
+            <acrylic:AcrylicBackdropControl 
+                Margin="0 0 25 100" 
+                CornerRadius="0 0 8 0"
+                Grid.Row="1"
+                Grid.Column="2">
+                <acrylic:AcrylicBackdropControl.Material>
+                    <ExperimentalAcrylicMaterial 
+                        TintColor="White"
+                        TintOpacity="0.9"
+                        MaterialOpacity="0.8"/>
+                </acrylic:AcrylicBackdropControl.Material>
+            </acrylic:AcrylicBackdropControl>
+
+            <acrylic:AcrylicBackdropControl 
+                Margin="25 100 0 0" 
+                CornerRadius="8 0 0 0"
+                Grid.Row="0"
+                Grid.Column="3">
+                <acrylic:AcrylicBackdropControl.Material>
+                    <ExperimentalAcrylicMaterial 
+                        TintColor="Black"
+                        TintOpacity="0.2"
+                        MaterialOpacity="0.1"/>
+                </acrylic:AcrylicBackdropControl.Material>
+            </acrylic:AcrylicBackdropControl>
+            <acrylic:AcrylicBackdropControl 
+                Margin="25 0 0 100" 
+                CornerRadius="0 0 0 8"
+                Grid.Row="1"
+                Grid.Column="3">
+                <acrylic:AcrylicBackdropControl.Material>
+                    <ExperimentalAcrylicMaterial 
+                        TintColor="Black"
+                        TintOpacity="0.2"
+                        MaterialOpacity="0.8"/>
+                </acrylic:AcrylicBackdropControl.Material>
+            </acrylic:AcrylicBackdropControl>
+
+            <acrylic:AcrylicBackdropControl 
+                Margin="0 100 25 0" 
+                CornerRadius="0 8 0 0"
+                Grid.Row="0"
+                Grid.Column="4">
+                <acrylic:AcrylicBackdropControl.Material>
+                    <ExperimentalAcrylicMaterial 
+                        TintColor="Black"
+                        TintOpacity="0.7"
+                        MaterialOpacity="0.1"/>
+                </acrylic:AcrylicBackdropControl.Material>
+            </acrylic:AcrylicBackdropControl>
+            <acrylic:AcrylicBackdropControl 
+                Margin="0 0 25 100" 
+                CornerRadius="0 0 8 0"
+                Grid.Row="1"
+                Grid.Column="4">
+                <acrylic:AcrylicBackdropControl.Material>
+                    <ExperimentalAcrylicMaterial 
+                        TintColor="Black"
+                        TintOpacity="0.9"
+                        MaterialOpacity="0.8"/>
                 </acrylic:AcrylicBackdropControl.Material>
             </acrylic:AcrylicBackdropControl>
         </Grid>

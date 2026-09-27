@@ -63,7 +63,8 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
         {
             using var tmpFilter = SKImageFilter.CreateBlur(3, 3, SKShaderTileMode.Clamp);
             using var tmpPaint = new SKPaint();
-            tmpPaint.Shader = backgroundShader;
+            var tmpColor = SKShader.CreateColor(_material.TintColor.ToSKColor());
+            tmpPaint.Shader = SKShader.CreateCompose(backgroundShader, tmpColor);
             tmpPaint.ImageFilter = tmpFilter;
 
             skia.SkCanvas.DrawRoundRect(shape, tmpPaint);
