@@ -5,6 +5,9 @@
 //
 // Licensed under the MIT License. See LICENSE.txt in the project root for details.
 
+using System.Collections.Immutable;
+using System.Numerics;
+using System.Runtime.Intrinsics;
 using Avalonia;
 using SkiaSharp;
 
@@ -12,6 +15,14 @@ namespace JuffMa.Controls.Acrylic;
 
 internal static class Utils
 {
+    private const int FilterLen = 256;
+
+    private static readonly ImmutableArray<byte> IndexTable =
+    [
+        .. Enumerable.Range(0, FilterLen - 1)
+            .Select(i => (byte)i)
+    ];
+
     /// <summary>
     /// Creates a color filter that applies an alpha value to the colors of an image.
     /// </summary>
@@ -21,14 +32,11 @@ internal static class Utils
     {
         opacity = Math.Clamp(opacity, 0, 1);
 
-        const int len = 256;
+        var c = IndexTable.AsSpan();
+        Span<byte> a = stackalloc byte[FilterLen];
 
-        Span<byte> c = stackalloc byte[len];
-        Span<byte> a = stackalloc byte[len];
-
-        for (var i = 0; i < len; i++)
+        for (var i = 0; i < FilterLen; i++)
         {
-            c[i] = (byte)(i);
             a[i] = (byte)(i * opacity);
         }
 
