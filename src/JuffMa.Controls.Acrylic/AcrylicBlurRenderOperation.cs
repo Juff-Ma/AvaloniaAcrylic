@@ -57,26 +57,15 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
             0, 0, (float)_bounds.Width, (float)_bounds.Height), 
             _cornerRadius);
 
-        // Fix rendering in preview
-        // This also fixes rendering in other limited contexts, even though it defeats the purpose of the blur effect
-        if (skia.GrContext is null)
-        {
-            using var tmpFilter = SKImageFilter.CreateBlur(3, 3, SKShaderTileMode.Clamp);
-            using var tmpPaint = new SKPaint();
-            var tmpColor = SKShader.CreateColor(_material.TintColor.ToSKColor());
-            tmpPaint.Shader = SKShader.CreateCompose(backgroundShader, tmpColor);
-            tmpPaint.ImageFilter = tmpFilter;
+        var surfaceInfo = new SKImageInfo(
+            (int)Math.Ceiling(_bounds.Width),
+            (int)Math.Ceiling(_bounds.Height),
+            SKImageInfo.PlatformColorType, SKAlphaType.Premul);
 
-            skia.SkCanvas.DrawRoundRect(shape, tmpPaint);
-
-            return;
-        }
-
-        using var blurred = SKSurface.Create(skia.GrContext, false,
-            new SKImageInfo(
-                (int)Math.Ceiling(_bounds.Width),
-                (int)Math.Ceiling(_bounds.Height),
-                SKImageInfo.PlatformColorType, SKAlphaType.Premul));
+        // Use GPU accel if available, otherwise fallback to CPU rendering
+        using var blurred = skia.GrContext is null ?
+            SKSurface.Create(surfaceInfo) :
+            SKSurface.Create(skia.GrContext, false, surfaceInfo);
 
         // This happens if the size of the control is <1x1, which can happen in some cases (e.g. when the control is not visible)
         if (blurred is null)
