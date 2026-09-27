@@ -68,6 +68,7 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
             SKSurface.Create(skia.GrContext, false, surfaceInfo);
 
         // This happens if the size of the control is <1x1, which can happen in some cases (e.g. when the control is not visible)
+        // In that case we just return since if it's not visible, we don't need to render anything.
         if (blurred is null)
         {
             return;

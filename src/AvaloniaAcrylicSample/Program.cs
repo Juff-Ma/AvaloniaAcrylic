@@ -29,6 +29,10 @@ static class Program
     private static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseWaylandWithFallback()
+            .With(new X11PlatformOptions { RenderingMode = 
+            [X11RenderingMode.Vulkan, X11RenderingMode.Egl, 
+                X11RenderingMode.Glx, X11RenderingMode.Software] })
 #if DEBUG
             .WithDeveloperTools()
 #endif

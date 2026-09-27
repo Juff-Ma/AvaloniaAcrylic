@@ -12,15 +12,20 @@
     <PackageReference Include="Avalonia.Desktop" Version="12.1.3" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="12.1.3" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.3" />
+    <PackageReference Include="Avalonia.Wayland" Version="12.1.3" />
+    <PackageReference Include="Avalonia.X11" Version="12.1.3" />
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.3">
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="[3.119.4, 4.0.0)" />
+    <PackageReference Include="SkiaSharp.NativeAssets.macOS" Version="[3.119.4, 4.0.0)" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="[3.119.4, 4.0.0)" />
   </ItemGroup>
 
   <ItemGroup>
-      <AvaloniaResource Include="..\..\assets\AvaloniaAcrylic-Small.png" Link="Assets/Icon.png"/>
-      <AvaloniaResource Include="..\..\assets\Background-Zillertal.jpg" Link="Assets/Background.jpg"/>
+      <AvaloniaResource Include="..\..\assets\AvaloniaAcrylic-Small.png" Link="Assets/Icon.png" />
+      <AvaloniaResource Include="..\..\assets\Background-Zillertal.jpg" Link="Assets/Background.jpg" />
 	  <ProjectReference Include="..\JuffMa.Controls.Acrylic\JuffMa.Controls.Acrylic.csproj" />
   </ItemGroup>
 </Project>
