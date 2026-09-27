@@ -2,9 +2,40 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:acrylic="clr-namespace:JuffMa.Controls.Acrylic;assembly=JuffMa.Controls.Acrylic"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="AvaloniaAcrylicSample.MainWindow"
         Title="AvaloniaAcrylicSample"
         Icon="Assets/Icon.png">
-    Sample Acrylic App
+    <Panel>
+        <Image Source="Assets/Background.jpg" Stretch="UniformToFill"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <acrylic:AcrylicBackdropControl 
+                Margin="100 100 100 0" 
+                CornerRadius="8 8 0 0"
+                Grid.Row="0">
+                <acrylic:AcrylicBackdropControl.Material>
+                    <ExperimentalAcrylicMaterial 
+                        TintColor="White"
+                        TintOpacity="0.001"
+                        MaterialOpacity="0.9"/>
+                </acrylic:AcrylicBackdropControl.Material>
+            </acrylic:AcrylicBackdropControl>
+            <acrylic:AcrylicBackdropControl 
+                Margin="100 0 100 100" 
+                CornerRadius="0 0 8 8"
+                Grid.Row="1">
+                <acrylic:AcrylicBackdropControl.Material>
+                    <ExperimentalAcrylicMaterial 
+                        TintColor="White"
+                        TintOpacity="0.999"
+                        MaterialOpacity="0.9"/>
+                </acrylic:AcrylicBackdropControl.Material>
+            </acrylic:AcrylicBackdropControl>
+        </Grid>
+    </Panel>
 </Window>

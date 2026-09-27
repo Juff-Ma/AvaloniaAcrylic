@@ -28,7 +28,7 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
         _cornerRadius = cornerRadius;
     }
 
-    private static SKShader? _acrylicNoiseShader;
+    private static readonly SKShader AcrylicNoiseShader = Utils.CreateAcrylicNoiseShader(0.0225);
 
     public bool HitTest(Point p) => _bounds.Contains(p);
 
@@ -77,6 +77,12 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
                 (int)Math.Ceiling(_bounds.Height),
                 SKImageInfo.PlatformColorType, SKAlphaType.Premul));
 
+        // This happens if the size of the control is <1x1, which can happen in some cases (e.g. when the control is not visible)
+        if (blurred is null)
+        {
+            return;
+        }
+
         using var filter = SKImageFilter.CreateBlur(10, 10, SKShaderTileMode.Clamp);
         using var blurPaint = new SKPaint();
         blurPaint.Shader = backgroundShader;
@@ -95,19 +101,6 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
         using var acrylicPaint = new SKPaint();
         acrylicPaint.IsAntialias = true;
 
-        const double noiseOpacity = 0.0225;
-
-        if (_acrylicNoiseShader is null)
-        {
-            const string resourceName = "Avalonia.Skia.Assets.NoiseAsset_256X256_PNG.png";
-            using var stream = typeof(SkiaPlatform).Assembly
-                .GetManifestResourceStream(resourceName);
-
-            using var bitmap = SKBitmap.Decode(stream);
-            _acrylicNoiseShader = SKShader.CreateBitmap(bitmap, SKShaderTileMode.Repeat, SKShaderTileMode.Repeat)
-                .WithColorFilter(Utils.CreateAlphaColorFilter(noiseOpacity));
-        }
-
         var materialColor = _material.MaterialColor.ToSKColor();
         var tintColor = _material.TintColor.ToSKColor();
 
@@ -115,7 +108,7 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
         using var tintShader = SKShader.CreateColor(tintColor);
 
         using var effectiveTintShader = SKShader.CreateCompose(backdropShader, tintShader);
-        using var effectiveShader = SKShader.CreateCompose(effectiveTintShader, _acrylicNoiseShader);
+        using var effectiveShader = SKShader.CreateCompose(effectiveTintShader, AcrylicNoiseShader);
 
         acrylicPaint.Shader = effectiveShader;
         acrylicPaint.IsAntialias = true;

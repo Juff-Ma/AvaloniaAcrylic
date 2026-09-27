@@ -20,6 +20,7 @@
 
   <ItemGroup>
       <AvaloniaResource Include="..\..\assets\AvaloniaAcrylic-Small.png" Link="Assets/Icon.png"/>
+      <AvaloniaResource Include="..\..\assets\Background-Zillertal.jpg" Link="Assets/Background.jpg"/>
 	  <ProjectReference Include="..\JuffMa.Controls.Acrylic\JuffMa.Controls.Acrylic.csproj" />
   </ItemGroup>
 </Project>

@@ -5,11 +5,12 @@
 //
 // Licensed under the MIT License. See LICENSE.txt in the project root for details.
 
+using Avalonia;
+using Avalonia.Skia;
+using SkiaSharp;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.Intrinsics;
-using Avalonia;
-using SkiaSharp;
 
 namespace JuffMa.Controls.Acrylic;
 
@@ -19,7 +20,7 @@ internal static class Utils
 
     private static readonly ImmutableArray<byte> IndexTable =
     [
-        .. Enumerable.Range(0, FilterLen - 1)
+        .. Enumerable.Range(0, FilterLen)
             .Select(i => (byte)i)
     ];
 
@@ -68,5 +69,18 @@ internal static class Utils
         roundRect.SetRectRadii(rect, radii);
 
         return roundRect;
+    }
+
+    public static SKShader CreateAcrylicNoiseShader(double opacity)
+    {
+        const string resourceName = "Avalonia.Skia.Assets.NoiseAsset_256X256_PNG.png";
+        using var stream = typeof(SkiaPlatform).Assembly
+            .GetManifestResourceStream(resourceName);
+
+        using var bitmap = SKBitmap.Decode(stream);
+        return SKShader.CreateBitmap(bitmap,
+                SKShaderTileMode.Repeat,
+                SKShaderTileMode.Repeat)
+            .WithColorFilter(CreateAlphaColorFilter(opacity));
     }
 }

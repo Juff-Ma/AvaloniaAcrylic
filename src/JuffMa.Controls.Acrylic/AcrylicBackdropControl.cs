@@ -33,8 +33,8 @@ public class AcrylicBackdropControl : Control
     /// <summary>
     /// <see cref="ExperimentalAcrylicMaterial"/> property linked with <see cref="Material"/>.
     /// </summary>
-    public static readonly StyledProperty<ExperimentalAcrylicMaterial> MaterialProperty =
-        AvaloniaProperty.Register<AcrylicBackdropControl, ExperimentalAcrylicMaterial>(nameof(Material));
+    public static readonly StyledProperty<ExperimentalAcrylicMaterial?> MaterialProperty =
+        AvaloniaProperty.Register<AcrylicBackdropControl, ExperimentalAcrylicMaterial?>(nameof(Material));
 
     /// <summary>
     /// <see cref="CornerRadius"/> property linked with <see cref="CornerRadius"/>.
@@ -45,7 +45,7 @@ public class AcrylicBackdropControl : Control
     /// <summary>
     /// <see cref="ExperimentalAcrylicMaterial"/> used for the acrylic effect.
     /// </summary>
-    public ExperimentalAcrylicMaterial Material
+    public ExperimentalAcrylicMaterial? Material
     {
         get => GetValue(MaterialProperty);
         set => SetValue(MaterialProperty, value);
@@ -63,5 +63,22 @@ public class AcrylicBackdropControl : Control
     static AcrylicBackdropControl()
     {
         AffectsRender<AcrylicBackdropControl>(MaterialProperty, CornerRadiusProperty);
+    }
+
+    /// <summary>
+    /// Renders the acrylic effect using the <see cref="Material"/> and <see cref="CornerRadius"/> properties.
+    /// </summary>
+    /// <param name="context">The drawing context.</param>
+    public override void Render(DrawingContext context)
+    {
+        base.Render(context);
+
+        var material = Material is not null
+            ? (ImmutableExperimentalAcrylicMaterial)Material.ToImmutable()
+            : DefaultMaterial;
+
+        context.Custom(
+            new AcrylicBlurRenderOperation(material, 
+                new Rect(Bounds.Size), CornerRadius));
     }
 }
