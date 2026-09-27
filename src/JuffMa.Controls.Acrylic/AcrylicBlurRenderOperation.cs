@@ -28,7 +28,7 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
         _cornerRadius = cornerRadius;
     }
 
-    private static SKShader? acrylicNoiseShader;
+    private static SKShader? _acrylicNoiseShader;
 
     public bool HitTest(Point p) => _bounds.Contains(p);
 
@@ -83,6 +83,44 @@ internal sealed class AcrylicBlurRenderOperation : ICustomDrawOperation
         blurPaint.ImageFilter = filter;
 
         blurred.Canvas.DrawRoundRect(shape, blurPaint);
+
+        using var blurredImage = blurred.Snapshot();
+        using var blurredShader = SKShader.CreateImage(blurredImage);
+        using var blurredPaint = new SKPaint();
+        blurredPaint.Shader = blurredShader;
+        blurredPaint.IsAntialias = true;
+
+        skia.SkCanvas.DrawRoundRect(shape, blurredPaint);
+
+        using var acrylicPaint = new SKPaint();
+        acrylicPaint.IsAntialias = true;
+
+        const double noiseOpacity = 0.0225;
+
+        if (_acrylicNoiseShader is null)
+        {
+            const string resourceName = "Avalonia.Skia.Assets.NoiseAsset_256X256_PNG.png";
+            using var stream = typeof(SkiaPlatform).Assembly
+                .GetManifestResourceStream(resourceName);
+
+            using var bitmap = SKBitmap.Decode(stream);
+            _acrylicNoiseShader = SKShader.CreateBitmap(bitmap, SKShaderTileMode.Repeat, SKShaderTileMode.Repeat)
+                .WithColorFilter(Utils.CreateAlphaColorFilter(noiseOpacity));
+        }
+
+        var materialColor = _material.MaterialColor.ToSKColor();
+        var tintColor = _material.TintColor.ToSKColor();
+
+        using var backdropShader = SKShader.CreateColor(materialColor);
+        using var tintShader = SKShader.CreateColor(tintColor);
+
+        using var effectiveTintShader = SKShader.CreateCompose(backdropShader, tintShader);
+        using var effectiveShader = SKShader.CreateCompose(effectiveTintShader, _acrylicNoiseShader);
+
+        acrylicPaint.Shader = effectiveShader;
+        acrylicPaint.IsAntialias = true;
+
+        skia.SkCanvas.DrawRoundRect(shape, acrylicPaint);
     }
 
     public bool Equals(ICustomDrawOperation? other)
