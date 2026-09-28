@@ -9,7 +9,7 @@ permissions:
 
 on:
   release:
-    types: [created]
+    types: [published]
   
 jobs:
   compile:
@@ -23,6 +23,8 @@ jobs:
     needs: compile
     runs-on: ubuntu-26.04
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
       - name: Download nuget artifact
         uses: actions/download-artifact@v8
         with:
