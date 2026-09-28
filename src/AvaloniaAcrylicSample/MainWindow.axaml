@@ -12,12 +12,42 @@
     <Panel>
         <Image Source="Assets/Background.jpg" Stretch="UniformToFill"/>
         <Grid>
-            <Grid.RowDefinitions>*, *</Grid.RowDefinitions>
+            <Grid.RowDefinitions>50, 70, *, *, 50</Grid.RowDefinitions>
             <Grid.ColumnDefinitions>50, *, *, *, *, 50</Grid.ColumnDefinitions>
+            <Panel Grid.Row="1"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="4"
+                   Margin="25 10 25 0">
+                <acrylic:AcrylicBackdropControl
+                    CornerRadius="100">
+                    <acrylic:AcrylicBackdropControl.Material>
+                        <ExperimentalAcrylicMaterial 
+                            TintColor="Purple"
+                            TintOpacity="0.75"
+                            MaterialOpacity="0.2"/>
+                    </acrylic:AcrylicBackdropControl.Material>
+                    <acrylic:AcrylicBackdropControl.Effect>
+                        <DropShadowEffect BlurRadius="10" 
+                                          Color="Black"
+                                          Opacity="0.3"
+                                          OffsetX="3"
+                                          OffsetY="5"/>
+                    </acrylic:AcrylicBackdropControl.Effect>
+                </acrylic:AcrylicBackdropControl>
+                <TextBlock Padding="5"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontSize="36"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           Opacity="0.75">
+                    Acrylic Sample
+                </TextBlock>
+            </Panel>
             <acrylic:AcrylicBackdropControl 
-                Margin="25 100 0 0" 
+                Margin="25 40 0 0"
                 CornerRadius="8 0 0 0"
-                Grid.Row="0"
+                Grid.Row="2"
                 Grid.Column="1">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
@@ -27,9 +57,9 @@
                 </acrylic:AcrylicBackdropControl.Material>
             </acrylic:AcrylicBackdropControl>
             <acrylic:AcrylicBackdropControl 
-                Margin="25 0 0 100" 
+                Margin="25 0 0 40" 
                 CornerRadius="0 0 0 8"
-                Grid.Row="1"
+                Grid.Row="3"
                 Grid.Column="1">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
@@ -40,9 +70,9 @@
             </acrylic:AcrylicBackdropControl>
 
             <acrylic:AcrylicBackdropControl 
-                Margin="0 100 25 0" 
+                Margin="0 40 25 0" 
                 CornerRadius="0 8 0 0"
-                Grid.Row="0"
+                Grid.Row="2"
                 Grid.Column="2">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
@@ -52,9 +82,9 @@
                 </acrylic:AcrylicBackdropControl.Material>
             </acrylic:AcrylicBackdropControl>
             <acrylic:AcrylicBackdropControl 
-                Margin="0 0 25 100" 
+                Margin="0 0 25 40" 
                 CornerRadius="0 0 8 0"
-                Grid.Row="1"
+                Grid.Row="3"
                 Grid.Column="2">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
@@ -65,9 +95,9 @@
             </acrylic:AcrylicBackdropControl>
 
             <acrylic:AcrylicBackdropControl 
-                Margin="25 100 0 0" 
+                Margin="25 40 0 0" 
                 CornerRadius="8 0 0 0"
-                Grid.Row="0"
+                Grid.Row="2"
                 Grid.Column="3">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
@@ -77,9 +107,9 @@
                 </acrylic:AcrylicBackdropControl.Material>
             </acrylic:AcrylicBackdropControl>
             <acrylic:AcrylicBackdropControl 
-                Margin="25 0 0 100" 
+                Margin="25 0 0 40" 
                 CornerRadius="0 0 0 8"
-                Grid.Row="1"
+                Grid.Row="3"
                 Grid.Column="3">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
@@ -90,9 +120,9 @@
             </acrylic:AcrylicBackdropControl>
 
             <acrylic:AcrylicBackdropControl 
-                Margin="0 100 25 0" 
+                Margin="0 40 25 0" 
                 CornerRadius="0 8 0 0"
-                Grid.Row="0"
+                Grid.Row="2"
                 Grid.Column="4">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
@@ -102,9 +132,9 @@
                 </acrylic:AcrylicBackdropControl.Material>
             </acrylic:AcrylicBackdropControl>
             <acrylic:AcrylicBackdropControl 
-                Margin="0 0 25 100" 
+                Margin="0 0 25 40" 
                 CornerRadius="0 0 8 0"
-                Grid.Row="1"
+                Grid.Row="3"
                 Grid.Column="4">
                 <acrylic:AcrylicBackdropControl.Material>
                     <ExperimentalAcrylicMaterial 
