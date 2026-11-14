@@ -8,6 +8,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 using SkiaSharp;
 
 namespace JuffMa.Controls.Acrylic;
@@ -63,6 +64,35 @@ public class AcrylicBackdropControl : Control
     static AcrylicBackdropControl()
     {
         AffectsRender<AcrylicBackdropControl>(MaterialProperty, CornerRadiusProperty);
+    }
+
+    private TopLevel? _topLevel;
+    private bool _isAttached;
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        _topLevel = TopLevel.GetTopLevel(this);
+        _isAttached = true;
+
+        _topLevel?.RequestAnimationFrame(OnAnimationFrame);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        _isAttached = false;
+        _topLevel = null;
+    }
+
+    private void OnAnimationFrame(TimeSpan timestamp)
+    {
+        if (!_isAttached || _topLevel is null)
+            return;
+
+        InvalidateVisual();
+
+        _topLevel.RequestAnimationFrame(OnAnimationFrame);
     }
 
     /// <summary>
