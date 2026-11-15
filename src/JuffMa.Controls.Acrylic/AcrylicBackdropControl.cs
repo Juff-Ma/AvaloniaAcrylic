@@ -22,31 +22,55 @@ public class AcrylicBackdropControl : Control
     /// <summary>
     /// <see cref="ExperimentalAcrylicMaterial"/> used as default for the <see cref="Material"/> property.
     /// </summary>
-    public static readonly ImmutableExperimentalAcrylicMaterial DefaultMaterial = 
-        (ImmutableExperimentalAcrylicMaterial)new ExperimentalAcrylicMaterial()
+    public static readonly ExperimentalAcrylicMaterial DefaultMaterial =
+        new()
         {
             MaterialOpacity = 0.1,
             TintColor = Colors.White,
             TintOpacity = 0.1,
             PlatformTransparencyCompensationLevel = 0
-        }.ToImmutable();
+        };
 
     /// <summary>
     /// <see cref="ExperimentalAcrylicMaterial"/> property linked with <see cref="Material"/>.
     /// </summary>
-    public static readonly StyledProperty<ExperimentalAcrylicMaterial?> MaterialProperty =
-        AvaloniaProperty.Register<AcrylicBackdropControl, ExperimentalAcrylicMaterial?>(nameof(Material));
+    public static readonly StyledProperty<ExperimentalAcrylicMaterial> MaterialProperty =
+        AvaloniaProperty.Register<AcrylicBackdropControl, ExperimentalAcrylicMaterial>
+            (nameof(Material), defaultValue: DefaultMaterial);
 
     /// <summary>
-    /// <see cref="CornerRadius"/> property linked with <see cref="CornerRadius"/>.
+    /// <see cref="Avalonia.CornerRadius"/> property linked with <see cref="CornerRadius"/>.
     /// </summary>
     public static readonly StyledProperty<CornerRadius> CornerRadiusProperty =
-        AvaloniaProperty.Register<AcrylicBackdropControl, CornerRadius>(nameof(CornerRadius));
+        AvaloniaProperty.Register<AcrylicBackdropControl, CornerRadius>
+            (nameof(CornerRadius));
+
+    /// <summary>
+    /// <see cref="bool"/> property linked with <see cref="ForcePermanentRender"/>.
+    /// </summary>
+    public static readonly StyledProperty<bool> ForcePermanentRenderProperty =
+        AvaloniaProperty.Register<AcrylicBackdropControl, bool>
+            (nameof(ForcePermanentRender), defaultValue: false);
+
+    /// <summary>
+    /// <see cref="bool"/> property linked with <see cref="ListenToPropertyChanges"/>
+    /// </summary>
+    public static readonly StyledProperty<bool> ListenToPropertyChangesProperty =
+        AvaloniaProperty.Register<AcrylicBackdropControl, bool>
+            (nameof(ListenToPropertyChanges), defaultValue: false);
+
+
+    /// <summary>
+    /// <see cref="bool"/> property linked with <see cref="CacheRenderResult"/>
+    /// </summary>
+    public static readonly StyledProperty<bool> CacheRenderResultProperty =
+        AvaloniaProperty.Register<AcrylicBackdropControl, bool>
+            (nameof(CacheRenderResult), defaultValue: false);
 
     /// <summary>
     /// <see cref="ExperimentalAcrylicMaterial"/> used for the acrylic effect.
     /// </summary>
-    public ExperimentalAcrylicMaterial? Material
+    public ExperimentalAcrylicMaterial Material
     {
         get => GetValue(MaterialProperty);
         set => SetValue(MaterialProperty, value);
@@ -61,33 +85,103 @@ public class AcrylicBackdropControl : Control
         set => SetValue(CornerRadiusProperty, value);
     }
 
+    /// <summary>
+    /// Force the object to be permanently rendered even if no property change occured
+    /// </summary>
+    public bool ForcePermanentRender
+    {
+        get => GetValue(ForcePermanentRenderProperty);
+        set => SetValue(ForcePermanentRenderProperty, value);
+    }
+
+    /// <summary>
+    /// Listen to parent and child property changes and force rerender if one occurs.
+    /// This does not work with animations but with manual moves
+    /// </summary>
+    public bool ListenToPropertyChanges
+    {
+        get => GetValue(ListenToPropertyChangesProperty);
+        set => SetValue(ListenToPropertyChangesProperty, value);
+    }
+
+    /// <summary>
+    /// Cache the shader to be used for rendering. This is not only a performance enhancement.
+    /// It can also help to create an effect similar to <see cref="ForcePermanentRender"/> as long as
+    /// the background is not animated. You should enable <see cref="ListenToPropertyChanges"/>
+    /// since without it, the cache will almost never update.
+    /// </summary>
+    public bool CacheRenderResult
+    {
+        get => GetValue(CacheRenderResultProperty);
+        set => SetValue(CacheRenderResultProperty, value);
+    }
+
     static AcrylicBackdropControl()
     {
-        AffectsRender<AcrylicBackdropControl>(MaterialProperty, CornerRadiusProperty);
+        AffectsRender<AcrylicBackdropControl>(
+            MaterialProperty, 
+            CornerRadiusProperty,
+            ForcePermanentRenderProperty,
+            ListenToPropertyChangesProperty,
+            CacheRenderResultProperty);
     }
 
     private TopLevel? _topLevel;
-    private bool _isAttached;
+    private bool _enableConstantRendering;
+
+    void EnableConstantRendering()
+    {
+        _enableConstantRendering = true;
+        _topLevel?.RequestAnimationFrame(OnAnimationFrame);
+    }
+
+    void DisableConstantRendering()
+    {
+        _enableConstantRendering = false;
+    }
 
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
         _topLevel = TopLevel.GetTopLevel(this);
-        _isAttached = true;
 
-        _topLevel?.RequestAnimationFrame(OnAnimationFrame);
+        if (ForcePermanentRender)
+        {
+            EnableConstantRendering();
+        }
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-        _isAttached = false;
         _topLevel = null;
+        DisableConstantRendering();
+    }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == ForcePermanentRenderProperty)
+        {
+            OnForcePermanentRenderChanged(change.GetNewValue<bool>());
+            return;
+        }
+    }
+
+    void OnForcePermanentRenderChanged(bool value)
+    {
+        if (value)
+        {
+            EnableConstantRendering();
+            return;
+        }
+        DisableConstantRendering();
     }
 
     private void OnAnimationFrame(TimeSpan timestamp)
     {
-        if (!_isAttached || _topLevel is null)
+        if (!_enableConstantRendering || _topLevel is null)
             return;
 
         InvalidateVisual();
@@ -103,9 +197,7 @@ public class AcrylicBackdropControl : Control
     {
         base.Render(context);
 
-        var material = Material is not null
-            ? (ImmutableExperimentalAcrylicMaterial)Material.ToImmutable()
-            : DefaultMaterial;
+        var material = (ImmutableExperimentalAcrylicMaterial)Material.ToImmutable();
 
         context.Custom(
             new AcrylicBlurRenderOperation(material, 

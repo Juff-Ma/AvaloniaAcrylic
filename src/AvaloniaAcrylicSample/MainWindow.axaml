@@ -19,7 +19,8 @@
                    Grid.ColumnSpan="4"
                    Margin="25 10 25 0">
                 <acrylic:AcrylicBackdropControl
-                    CornerRadius="100">
+                    CornerRadius="100"
+                    ForcePermanentRender="True">
                     <acrylic:AcrylicBackdropControl.Material>
                         <ExperimentalAcrylicMaterial 
                             TintColor="Purple"
