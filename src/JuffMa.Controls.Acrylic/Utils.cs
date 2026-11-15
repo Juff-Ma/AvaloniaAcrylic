@@ -11,6 +11,7 @@ using SkiaSharp;
 using System.Collections.Immutable;
 using System.Numerics;
 using System.Runtime.Intrinsics;
+using Avalonia.VisualTree;
 
 namespace JuffMa.Controls.Acrylic;
 
@@ -82,5 +83,43 @@ internal static class Utils
                 SKShaderTileMode.Repeat,
                 SKShaderTileMode.Repeat)
             .WithColorFilter(CreateAlphaColorFilter(opacity));
+    }
+
+    public static void AttachListenerToParents(Visual child, EventHandler<AvaloniaPropertyChangedEventArgs> handler)
+    {
+        var parent = child.GetVisualParent();
+        if (parent is not null)
+        {
+            parent.PropertyChanged += handler;
+            AttachListenerToParents(parent, handler);
+        }
+    }
+
+    public static void DetachListenerFromParents(Visual child, EventHandler<AvaloniaPropertyChangedEventArgs> handler)
+    {
+        var parent = child.GetVisualParent();
+        if (parent is not null)
+        {
+            parent.PropertyChanged -= handler;
+            DetachListenerFromParents(parent, handler);
+        }
+    }
+
+    public static void AttachListenerToChildren(Visual parent, EventHandler<AvaloniaPropertyChangedEventArgs> handler)
+    {
+        foreach (var child in parent.GetVisualChildren())
+        {
+            child.PropertyChanged += handler;
+            AttachListenerToChildren(child, handler);
+        }
+    }
+
+    public static void DetachListenerFromChildren(Visual parent, EventHandler<AvaloniaPropertyChangedEventArgs> handler)
+    {
+        foreach (var child in parent.GetVisualChildren())
+        {
+            child.PropertyChanged -= handler;
+            DetachListenerFromChildren(child, handler);
+        }
     }
 }

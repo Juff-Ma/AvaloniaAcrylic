@@ -129,17 +129,6 @@ public class AcrylicBackdropControl : Control
     private TopLevel? _topLevel;
     private bool _enableConstantRendering;
 
-    void EnableConstantRendering()
-    {
-        _enableConstantRendering = true;
-        _topLevel?.RequestAnimationFrame(OnAnimationFrame);
-    }
-
-    void DisableConstantRendering()
-    {
-        _enableConstantRendering = false;
-    }
-
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
@@ -147,7 +136,12 @@ public class AcrylicBackdropControl : Control
 
         if (ForcePermanentRender)
         {
-            EnableConstantRendering();
+            OnForcePermanentRenderChanged(true);
+        }
+
+        if (ListenToPropertyChanges)
+        {
+            OnListenToPropertyChangesChanged(true);
         }
     }
 
@@ -155,7 +149,9 @@ public class AcrylicBackdropControl : Control
     {
         base.OnDetachedFromVisualTree(e);
         _topLevel = null;
-        DisableConstantRendering();
+        
+        OnForcePermanentRenderChanged(false);
+        OnListenToPropertyChangesChanged(false);
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -167,16 +163,39 @@ public class AcrylicBackdropControl : Control
             OnForcePermanentRenderChanged(change.GetNewValue<bool>());
             return;
         }
+        if (change.Property == ListenToPropertyChangesProperty)
+        {
+            OnListenToPropertyChangesChanged(change.GetNewValue<bool>());
+            return;
+        }
     }
 
     void OnForcePermanentRenderChanged(bool value)
     {
         if (value)
         {
-            EnableConstantRendering();
+            _enableConstantRendering = true;
+            _topLevel?.RequestAnimationFrame(OnAnimationFrame);
             return;
         }
-        DisableConstantRendering();
+        _enableConstantRendering = false;
+    }
+
+    void OnListenToPropertyChangesChanged(bool value)
+    {
+        if (value)
+        {
+            Utils.AttachListenerToParents(this, OnWatchedPropertyChanged);
+            Utils.AttachListenerToChildren(this, OnWatchedPropertyChanged);
+            return;
+        }
+        Utils.DetachListenerFromParents(this, OnWatchedPropertyChanged);
+        Utils.DetachListenerFromChildren(this, OnWatchedPropertyChanged);
+    }
+
+    private void OnWatchedPropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    {
+        InvalidateVisual();
     }
 
     private void OnAnimationFrame(TimeSpan timestamp)

@@ -20,7 +20,7 @@
                    Margin="25 10 25 0">
                 <acrylic:AcrylicBackdropControl
                     CornerRadius="100"
-                    ForcePermanentRender="True">
+                    ListenToPropertyChanges="True">
                     <acrylic:AcrylicBackdropControl.Material>
                         <ExperimentalAcrylicMaterial 
                             TintColor="Purple"
