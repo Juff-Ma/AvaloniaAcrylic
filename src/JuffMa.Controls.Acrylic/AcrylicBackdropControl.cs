@@ -220,6 +220,7 @@ public class AcrylicBackdropControl : Control
 
         context.Custom(
             new AcrylicBlurRenderOperation(material, 
-                new Rect(Bounds.Size), CornerRadius));
+                new Rect(Bounds.Size), CornerRadius,
+                CacheRenderResult));
     }
 }
