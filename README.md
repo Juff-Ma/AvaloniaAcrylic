@@ -26,7 +26,7 @@ First of all you need to install the nuget package:
 
 After that, add the following namespace to the elements you want to use the control in:
 
-`xmlns:acrylic="clr-namespace:JuffMa.Controls.Acrylic;assembly=JuffMa.Controls.Acrylic"`
+`xmlns:acrylic="using:JuffMa.Controls.Acrylic"`
 
 Then just add the control where you like:
 
@@ -38,7 +38,8 @@ Or, if you want something more fancy, you can specify a corner radius, effect an
 
 ```xaml
 <acrylic:AcrylicBackdropControl
-    CornerRadius="10">
+    CornerRadius="10"
+    CacheRenderResult="True">
     <acrylic:AcrylicBackdropControl.Material>
         <ExperimentalAcrylicMaterial 
             TintColor="Black"
@@ -66,6 +67,22 @@ The difference between `TintOpacity` and `MaterialOpacity` is that the latter is
 Even the difference between `TintOpacity` at `1.0` and `0.0` is only a difference in saturation.
 
 If you want to know more, you can find the example app (see image at the top) in the `src` directory.
+
+### I have ghosting effects!
+
+This can happen with this control but there are fixes depending on what you need.
+
+Since the renderer uses a blurred screenshot of the background, when only part of the control is redrawn
+the new shader will reuse pixels of the already blurred background.
+
+There are 3 properties to mitigate this you can place on your `AcrylicBackdropControl`.
+
+1. `ListenToPropertyChanges` - This will make the control listen to changes in the properties of the elements behind and before it and redraw if they change.
+    This only works for static operations, not animations but is pretty cheap.
+2. `ForcePermanentRender` - This does what it says on the tin. It will force the control to redraw every frame. 
+    This is very expensive and should only be used if you really need it. (The sample app with this enabled draws >30% GPU on my 5060 TI)
+3. `CacheRenderResult` - This will cache the render result as long as nothing meaningful changes and is the preffered solution. Note that this will basically prohibit the background from ever changing. 
+    If you additionally enable `ListenToPropertyChanges` it will work better but animated backgrounds are still out of question.
 
 ## Technical properties
 
