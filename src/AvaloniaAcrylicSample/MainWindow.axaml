@@ -67,6 +67,15 @@
                                FontWeight="Bold"
                                Foreground="White"
                                Opacity="0.75">
+                        CacheRenderResult="True"
+                    </TextBlock>
+                    <TextBlock Padding="5"
+                               TextAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="36"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Opacity="0.75">
                         Acrylic Test
                     </TextBlock>
                     <TextBlock Padding="5"

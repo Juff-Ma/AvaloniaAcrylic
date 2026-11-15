@@ -129,6 +129,7 @@ public class AcrylicBackdropControl : Control
     private TopLevel? _topLevel;
     private bool _enableConstantRendering;
 
+    /// <inheritdoc/>
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
@@ -145,6 +146,7 @@ public class AcrylicBackdropControl : Control
         }
     }
 
+    /// <inheritdoc/>
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
@@ -154,6 +156,7 @@ public class AcrylicBackdropControl : Control
         OnListenToPropertyChangesChanged(false);
     }
 
+    /// <inheritdoc/>
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
